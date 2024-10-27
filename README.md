@@ -1,6 +1,6 @@
 # Unity-AssetBundle-Extractor
 ## What does this script do
-Extract assetbundles using UnityPy
+Extract AssetBundles using UnityPy
 
 ![image](https://github.com/user-attachments/assets/c93b531b-eb8b-4d96-96f6-f9579b4746e1)
 
