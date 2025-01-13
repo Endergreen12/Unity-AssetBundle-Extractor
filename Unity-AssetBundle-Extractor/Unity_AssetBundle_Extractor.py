@@ -4,7 +4,7 @@ import os
 
 from UnityPy.classes import AudioClip, Mesh, TextAsset
 
-required_unitypy_version = '1.10.14'
+required_unitypy_version = '1.20.17'
 if UnityPy.__version__ != required_unitypy_version:
     raise ImportError(f"Invalid UnityPy version detected. Please use version {required_unitypy_version}")
 
@@ -31,7 +31,7 @@ for bundle_path in glob.glob(os.path.join(path, "*")):
             data = obj.read()
             match obj.type.name:
                 case "Texture2D" | "Sprite":
-                    data.image.save(os.path.join(full_path_dir_str, data.name + ".png")) # 拡張子がPSDだと例外が出るのでsplitextで拡張子をのぞいたパスに.pngをくっつけて保存
+                    data.image.save(os.path.join(full_path_dir_str, data.m_Name + ".png")) # 拡張子がPSDだと例外が出るのでsplitextで拡張子をのぞいたパスに.pngをくっつけて保存
                     
                 case "AudioClip":
                     for name, audio_data in data.samples.items():
@@ -39,16 +39,16 @@ for bundle_path in glob.glob(os.path.join(path, "*")):
                             f.write(audio_data)
                         
                 case "Mesh":
-                    with open(os.path.join(full_path_dir_str, f"{data.name}.obj"), "wt", newline = "") as f:
+                    with open(os.path.join(full_path_dir_str, f"{data.m_Name}.obj"), "wt", newline = "") as f:
                         # newline = "" is important
                         f.write(data.export())
                         
                 case "TextAsset":
-                    with open(os.path.join(full_path_dir_str, data.name), "wb") as f:
-                        f.write(bytes(data.script))
+                    with open(os.path.join(full_path_dir_str, data.m_Name), "wb") as f:
+                        f.write(data.m_Script.encode("utf-8", "surrogateescape"))
                     
         except Exception as e:
-            print(f"Exception occurred while exporting {data.name}")
+            print(f"Exception occurred while exporting {data.m_Name}")
             if hasattr(env, "file"):
                 print(f"Bundle file name: {env.file.name}")
             print(f"Asset type: {obj.type.name}")
